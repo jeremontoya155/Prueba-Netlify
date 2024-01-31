@@ -2,7 +2,7 @@ const axios = require('axios');
 require('dotenv').config();
 //const REFRESH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwNjAyNDM2OSwianRpIjoiYjk4OGE3OTQtYTExNi00ODM2LWI1ZTItMjNkOTliMDlhZjA5IiwidHlwZSI6InJlZnJlc2giLCJpZGVudGl0eSI6MzkxLCJuYmYiOjE3MDYwMjQzNjksImV4cCI6MTcwNjExMDc2OSwicm9sZXMiOlt7ImlkIjoxMSwibmFtZSI6IjBrbSJ9LHsiaWQiOjE5LCJuYW1lIjoiRGVzYXJyb2xsbyJ9LHsiaWQiOjEwLCJuYW1lIjoiRXh0cmFzIn0seyJpZCI6OSwibmFtZSI6Ik1vZGVsb3MifSx7ImlkIjoxMiwibmFtZSI6IlVzYWRvcyJ9XX0.4S0zav9cHDmsPaZWQjIq6-IAHbHmdqiCAwm-CBjMAX4"
 
-const url =process.env.URL ;
+const LINK =process.env.LINK ;
 const email =process.env.EMAIL ;
 const password =process.env.PASSWORD ; 
 let ACCESSTOKEN;
@@ -18,7 +18,7 @@ const loginAndGetToken = async () => {
     };
 
     // Realizar la solicitud POST para obtener el token
-    const response = await axios.post(url, null, { headers });
+    const response = await axios.post(LINK, null, { headers });
 
     // Verificar el código de estado de la respuesta
     if (response.status === 200) {
@@ -68,9 +68,9 @@ app.get('/', (req, res) => {
 app.get('/obtener-marcas', async (req, res) => {
  
   try {
-    const apiUrl = 'https://api.infoauto.com.ar/cars/pub/';
+    const apiLINK = 'https://api.infoauto.com.ar/cars/pub/';
 
-    const allData = await obtenerTodasLasMarcas(apiUrl, ACCESSTOKEN);
+    const allData = await obtenerTodasLasMarcas(apiLINK, ACCESSTOKEN);
 
    
 
@@ -84,11 +84,11 @@ app.get('/obtener-marcas', async (req, res) => {
 app.get('/obtener-grupos/:brandId', async (req, res) => {
   
   try {
-    const apiUrl = 'https://api.infoauto.com.ar/cars/pub/';
+    const apiLINK = 'https://api.infoauto.com.ar/cars/pub/';
 
     const brandId = req.params.brandId;
 
-    const allData = await obtenerTodosLosGrupos(apiUrl, ACCESSTOKEN, brandId);
+    const allData = await obtenerTodosLosGrupos(apiLINK, ACCESSTOKEN, brandId);
 
     console.log(`Grupos obtenidos para la marca con ID ${brandId}:`, allData);
 
@@ -102,12 +102,12 @@ app.get('/obtener-grupos/:brandId', async (req, res) => {
 app.get('/obtener-modelos/:brandId/:groupId', async (req, res) => {
  
   try {
-    const apiUrl = 'https://api.infoauto.com.ar/cars/pub/';
+    const apiLINK = 'https://api.infoauto.com.ar/cars/pub/';
 
     const brandId = req.params.brandId;
     const groupId = req.params.groupId;
 
-    const allData = await obtenerTodosLosModelos(apiUrl, ACCESSTOKEN, brandId, groupId);
+    const allData = await obtenerTodosLosModelos(apiLINK, ACCESSTOKEN, brandId, groupId);
 
     
 
@@ -121,11 +121,11 @@ app.get('/obtener-modelos/:brandId/:groupId', async (req, res) => {
 app.get('/obtener-precios/:codia', async (req, res) => {
 
   try {
-    const apiUrl = 'https://api.infoauto.com.ar/cars/pub/';
+    const apiLINK = 'https://api.infoauto.com.ar/cars/pub/';
 
     const codia = req.params.codia;
 
-    const allData = await obtenerTodosLosPrecios(apiUrl, ACCESSTOKEN, codia);
+    const allData = await obtenerTodosLosPrecios(apiLINK, ACCESSTOKEN, codia);
 
     
 
@@ -136,7 +136,7 @@ app.get('/obtener-precios/:codia', async (req, res) => {
   }
 });
 
-async function obtenerTodasLasMarcas(apiUrl, ACCESSTOKEN) {
+async function obtenerTodasLasMarcas(apiLINK, ACCESSTOKEN) {
   let allData = [];
   let page = 1;
   let totalPages = 1;
@@ -144,7 +144,7 @@ async function obtenerTodasLasMarcas(apiUrl, ACCESSTOKEN) {
   // Función para obtener datos de una página específica
   async function obtenerDatosDePagina(page) {
     try {
-      const response = await axios.get(`${apiUrl}/brands?page=${page}`, {
+      const response = await axios.get(`${apiLINK}/brands?page=${page}`, {
         headers: {
           'Authorization': `Bearer ${ACCESSTOKEN}`
         }
@@ -180,7 +180,7 @@ async function obtenerTodasLasMarcas(apiUrl, ACCESSTOKEN) {
   return allData;
 }
 
-async function obtenerTodosLosGrupos(apiUrl, ACCESSTOKEN, brandId) {
+async function obtenerTodosLosGrupos(apiLINK, ACCESSTOKEN, brandId) {
   let allData = [];
   let page = 1;
   let totalPages = 1;
@@ -188,7 +188,7 @@ async function obtenerTodosLosGrupos(apiUrl, ACCESSTOKEN, brandId) {
   // Función para obtener datos de una página específica
   async function obtenerDatosDePagina(page) {
     try {
-      const response = await axios.get(`${apiUrl}/brands/${brandId}/groups?page=${page}`, {
+      const response = await axios.get(`${apiLINK}/brands/${brandId}/groups?page=${page}`, {
         headers: {
           'Authorization': `Bearer ${ACCESSTOKEN}`
         }
@@ -224,7 +224,7 @@ async function obtenerTodosLosGrupos(apiUrl, ACCESSTOKEN, brandId) {
   return allData;
 }
 
-async function obtenerTodosLosModelos(apiUrl, ACCESSTOKEN, brandId, groupId) {
+async function obtenerTodosLosModelos(apiLINK, ACCESSTOKEN, brandId, groupId) {
   let allData = [];
   let page = 1;
   let totalPages = 1;
@@ -232,7 +232,7 @@ async function obtenerTodosLosModelos(apiUrl, ACCESSTOKEN, brandId, groupId) {
   // Función para obtener datos de una página específica
   async function obtenerDatosDePagina(page) {
     try {
-      const response = await axios.get(`${apiUrl}/brands/${brandId}/groups/${groupId}/models?page=${page}`, {
+      const response = await axios.get(`${apiLINK}/brands/${brandId}/groups/${groupId}/models?page=${page}`, {
         headers: {
           'Authorization': `Bearer ${ACCESSTOKEN}`
         }
@@ -268,9 +268,9 @@ async function obtenerTodosLosModelos(apiUrl, ACCESSTOKEN, brandId, groupId) {
   return allData;
 }
 
-async function obtenerTodosLosPrecios(apiUrl, ACCESSTOKEN, codia) {
+async function obtenerTodosLosPrecios(apiLINK, ACCESSTOKEN, codia) {
   try {
-    const response = await axios.get(`${apiUrl}/models/${codia}/prices`, {
+    const response = await axios.get(`${apiLINK}/models/${codia}/prices`, {
       headers: {
         'Authorization': `Bearer ${ACCESSTOKEN}`
       }
