@@ -1,0 +1,4 @@
+
+[build]
+  command = "yarn --frozen-lockfile install && node server.js"
+  publish = "public"
